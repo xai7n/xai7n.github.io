@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Просмотр файлов</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        #file-list {
+            width: 20%;
+            background-color: #f4f4f4;
+            padding: 10px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+        #file-list ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        #file-list li {
+            padding: 8px;
+            cursor: pointer;
+            border-bottom: 1px solid #ddd;
+        }
+        #file-list li:hover {
+            background-color: #ddd;
+        }
+        #file-content {
+            width: 80%;
+            padding: 10px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            white-space: pre-wrap; /* Сохраняет форматирование текста */
+        }
+    </style>
+</head>
+<body>
+
+<div id="file-list">
+    <ul>
+        <li onclick="loadFile('file1.txt')">file1.txt</li>
+        <li onclick="loadFile('file2.txt')">file2.txt</li>
+        <li onclick="loadFile('file3.txt')">file3.txt</li>
+        <!-- Добавьте больше файлов по мере необходимости -->
+    </ul>
+</div>
+
+<div id="file-content">
+    <!-- Содержимое файла будет загружено сюда -->
+</div>
+
+<script>
+    function loadFile(filename) {
+        fetch(filename)
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('file-content').textContent = data;
+            })
+            .catch(error => {
+                console.error('Ошибка загрузки файла:', error);
+                document.getElementById('file-content').textContent = 'Ошибка загрузки файла.';
+            });
+    }
+
+    // Загрузить первый файл по умолчанию
+    window.onload = function() {
+        loadFile('file1.txt');
+    };
+</script>
+
+</body>
+</html>
