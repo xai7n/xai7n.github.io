@@ -1,78 +1,34 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Просмотр файлов</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            display: flex;
-            height: 100vh;
-            font-family: Arial, sans-serif;
-        }
-        #file-list {
-            width: 20%;
-            background-color: #f4f4f4;
-            padding: 10px;
-            box-sizing: border-box;
-            overflow-y: auto;
-        }
-        #file-list ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        #file-list li {
-            padding: 8px;
-            cursor: pointer;
-            border-bottom: 1px solid #ddd;
-        }
-        #file-list li:hover {
-            background-color: #ddd;
-        }
-        #file-content {
-            width: 80%;
-            padding: 10px;
-            box-sizing: border-box;
-            overflow-y: auto;
-            white-space: pre-wrap; /* Сохраняет форматирование текста */
-        }
-    </style>
+    <title>Отображение содержимого файла</title>
 </head>
 <body>
+    <h1>Содержимое файла:</h1>
+    <pre id="file-content">Загрузка...</pre>
 
-<div id="file-list">
-    <ul>
-        <li onclick="loadFile('teste1.txt')">file1.txt</li>
-        <li onclick="loadFile('file2.txt')">file2.txt</li>
-        <li onclick="loadFile('file3.txt')">file3.txt</li>
-        <!-- Добавьте больше файлов по мере необходимости -->
-    </ul>
-</div>
+    <script>
+        // Указываем путь к файлу
+        const filePath = 'file.txt';
 
-<div id="file-content">
-    <!-- Содержимое файла будет загружено сюда -->
-</div>
-
-<script>
-    function loadFile(filename) {
-        fetch(filename)
-            .then(response => response.text())
+        // Используем Fetch API для чтения файла
+        fetch(filePath)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Файл не найден');
+                }
+                return response.text();
+            })
             .then(data => {
+                // Вставляем содержимое файла в элемент <pre>
                 document.getElementById('file-content').textContent = data;
             })
             .catch(error => {
-                console.error('Ошибка загрузки файла:', error);
-                document.getElementById('file-content').textContent = 'Ошибка загрузки файла.';
+                console.error('Ошибка:', error);
+                document.getElementById('file-content').textContent = 'Не удалось загрузить файл.';
             });
-    }
-
-    // Загрузить первый файл по умолчанию
-    window.onload = function() {
-        loadFile('file1.txt');
-    };
-</script>
-
+    </script>
 </body>
 </html>
